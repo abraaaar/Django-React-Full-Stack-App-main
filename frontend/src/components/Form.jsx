@@ -2,7 +2,6 @@ import { useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
-import "../styles/Form.css"
 import LoadingIndicator from "./LoadingIndicator";
 
 function Form({ route, method }) {
@@ -22,7 +21,8 @@ function Form({ route, method }) {
             if (method === "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                navigate("/")
+                // Redirect to the specific role page
+                navigate(`/${res.data.role}`)
             } else {
                 navigate("/login")
             }
@@ -58,4 +58,4 @@ function Form({ route, method }) {
     );
 }
 
-export default Form
+export default Form;

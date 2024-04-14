@@ -96,7 +96,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "AuthAppCurium",
+        "NAME": "AuthApp",
         "USER": "abrar",
         "PASSWORD": "adminn",
         "HOST": 'localhost',

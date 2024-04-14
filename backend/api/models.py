@@ -1,12 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Role(models.TextChoices):
+    USER = 'user'
+    SURGEON = 'surgeon'
+    RADIOLOGIST = 'radiologist'
+    TELERADIOLOGIST = 'teleradiologist'
 
-class Note(models.Model):
-    title = models.CharField(max_length=100)
-    content = models.TextField()
+class User(models.Model):
+    user_id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    role = models.CharField(max_length=20, choices=Role.choices, default=Role.USER)
     created_at = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notes")
+    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.title
+    class Meta:
+        db_table = 'app_user'

@@ -51,7 +51,18 @@ function ProtectedRoute({ children }) {
         return <div>Loading...</div>;
     }
 
-    return isAuthorized ? children : <Navigate to="/login" />;
+    const role = localStorage.getItem('ROLE');
+    if (role === 'user') {
+        return <Navigate to="/user" />;
+    } else if (role === 'surgeon') {
+        return <Navigate to="/surgeon" />;
+    } else if (role === 'radiologist') {
+        return <Navigate to="/radiologist" />;
+    } else if (role === 'teleradiologist') {
+        return <Navigate to="/teleradiologist" />;
+    } else {
+        return <Navigate to="/login" />;
+    }
 }
 
 export default ProtectedRoute;
