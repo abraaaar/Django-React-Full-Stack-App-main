@@ -4,26 +4,22 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/Form.css"
 import LoadingIndicator from "./LoadingIndicator";
-
 function Form({ route, method }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-
     const name = method === "login" ? "Login" : "Register";
-
     const handleSubmit = async (e) => {
         setLoading(true);
         e.preventDefault();
-
         try {
             const res = await api.post(route, { username, password, role })
             if (method === "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-                navigate("/")
+                navigate(`/${res.data.role.toLowerCase().replace(' ', '')}`)
             } else {
                 navigate("/login")
             }
@@ -33,7 +29,6 @@ function Form({ route, method }) {
             setLoading(false)
         }
     };
-
     return (
         <form onSubmit={handleSubmit} className="form-container">
             <h1>{name}</h1>
@@ -51,18 +46,20 @@ function Form({ route, method }) {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
             />
-            <select
-                className="form-input"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                placeholder="Role"
-            >
-                <option value="">Select a role</option>
-                <option value="Normal User">Normal User</option>
-                <option value="Surgeon">Surgeon</option>
-                <option value="Teleradiologist">Teleradiologist</option>
-                <option value="Radiologist">Radiologist</option>
-            </select>
+            {method === "register" && (
+                <select
+                    className="form-input"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    placeholder="Role"
+                >
+                    <option value="">Select a role</option>
+                    <option value="Normal User">Normal User</option>
+                    <option value="Surgeon">Surgeon</option>
+                    <option value="Teleradiologist">Teleradiologist</option>
+                    <option value="Radiologist">Radiologist</option>
+                </select>
+            )}
             {loading && <LoadingIndicator />}
             <button className="form-button" type="submit">
                 {name}
@@ -71,4 +68,4 @@ function Form({ route, method }) {
     );
 }
 
-export default Form
+export default Form;
